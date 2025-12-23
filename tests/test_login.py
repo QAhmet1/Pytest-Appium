@@ -1,18 +1,6 @@
-import json
-import os
 
 import allure
 import pytest
-
-
-
-# def get_credentials(user_key: str) -> dict:
-#     """Read credentials for given key from the JSON file."""
-#     path = os.path.join(os.path.dirname(__file__), "../config/test_data.json")
-#     with open(path) as f:
-#         data = json.load(f)
-#     return data[user_key]
-
 
 @allure.feature("Authentication")
 class TestSignIn:

@@ -1,0 +1,34 @@
+### Project Specific Data
+# Exclude sensitive test data and credentials
+app/config/test_data.json
+
+### Application Binaries
+# Large APK files should not be stored in version control
+app/android/*.apk
+
+### Python and Virtual Environments
+# Exclude the virtual environment as it is machine-specific
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+
+### Test Reports and Temporary Files
+# Exclude dynamically generated test results and reports
+reports/
+allure-results/
+allure-report/
+.pytest_cache/
+.allure/
+
+### IDE Settings (PyCharm / VS Code)
+# Exclude local editor configurations
+.idea/
+.vscode/
+
+### System and Misc Files
+# Exclude OS-generated and log files
+.DS_Store
+Thumbs.db
+*.log

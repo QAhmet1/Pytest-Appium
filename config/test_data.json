@@ -1,0 +1,10 @@
+{
+  "valid_user": {
+    "email": "automation_qa_preintcab@iq1te49u.mailosaur.net",
+    "password": "Tester01"
+  },
+  "invalid_user": {
+    "email": "wrong@example.com",
+    "password": "WrongPassword"
+  }
+}

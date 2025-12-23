@@ -1,0 +1,31 @@
+{
+  "android": {
+    "platformName": "Android",
+    "automationName": "UiAutomator2",
+    "deviceName": "Pixel 9",
+    "platformVersion": "16.0",
+    "app": "app/android/my_app.apk",
+    "avd": "Pixel_9",
+    "autoGrantPermissions": true,
+    "noReset": false,
+    "fullReset": false
+  },
+  "ios": {
+    "platformName": "iOS",
+    "automationName": "XCUITest",
+    "deviceName": "iPhone 15 Pro",
+    "platformVersion": "17.2",
+    "app": "path/to/your/ios_app.ipa"
+  },
+  "browserstack": {
+    "user": "YOUR_BROWSERSTACK_USERNAME",
+    "key": "YOUR_BROWSERSTACK_ACCESS_KEY",
+    "remoteUrl": "http://hub.browserstack.com/wd/hub",
+    "app": "bs://YOUR_UPLOADED_APP_ID",
+    "deviceName": "Google Pixel 9",
+    "osVersion": "16.0",
+    "projectName": "Mobile Automation Project",
+    "buildName": "Local Build",
+    "sessionName": "Sample Test Session"
+  }
+}

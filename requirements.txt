@@ -1,0 +1,10 @@
+# Core Testing Framework
+pytest~=8.4.2
+
+# Mobile and Web Automation
+Appium-Python-Client~=5.2.4
+selenium~=4.36.0
+
+# Reporting and Documentation
+allure-pytest~=2.13.5
+allure-python-commons~=2.15.2

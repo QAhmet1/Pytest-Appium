@@ -42,7 +42,6 @@ class TestSignIn:
     @allure.story("Verify required error messages for email field")
     @allure.severity(allure.severity_level.CRITICAL)
     def test_required_email_fields(self, app):
-        # This 'with' statement requires the code inside it to be indented
         with allure.step("Enter password, keep email is empty, click login, and verify required error message for email"):
             app.login.type_text(app.login.EMAIL_INPUT, self.valid_user["email"])
             app.login.click(app.login.LOGIN_BUTTON)

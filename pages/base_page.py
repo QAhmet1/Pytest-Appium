@@ -23,7 +23,14 @@ class BasePage:
         self.find(locator).clear()
         self.find(locator).send_keys(text)
 
-    from selenium.webdriver.support import expected_conditions as EC
+    def get_text(self, locator):
+        """
+        Waits for the element to be visible, then retrieves its text content.
+        :param locator: Tuple (By.ID, "value") or similar.
+        :return: String value of the element's text.
+        """
+        element = self.wait.until(EC.visibility_of_element_located(locator))
+        return element.text
 
     def is_visible(self, locator: tuple[str,str], timeout: int = 10) -> bool:
         """
@@ -38,3 +45,20 @@ class BasePage:
             return True
         except (TimeoutException, NoSuchElementException):
             return False
+
+    def verify_element_text(self, locator, expected_text):
+        """
+        Retrieves the text from the given locator and asserts it matches the expected text.
+        :param locator: The element locator (tuple).
+        :param expected_text: The string value we expect to find.
+        """
+        actual_text = self.get_text(locator)  # Assuming get_text is defined in your BasePage
+        assert actual_text == expected_text, f"Expected: '{expected_text}', but found: '{actual_text}'"
+
+    def clear_input_field(self, locator):
+        """
+        Waits for the element to be visible and clears its text content.
+        :param locator: The element locator (tuple).
+        """
+        element = self.wait.until(EC.visibility_of_element_located(locator))
+        element.clear()

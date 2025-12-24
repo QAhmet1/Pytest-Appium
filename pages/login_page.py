@@ -5,6 +5,7 @@ from appium.webdriver.common.appiumby import AppiumBy  # Correct import for Appi
 from selenium.common import NoSuchElementException
 
 from pages.base_page import BasePage
+from utilis.constants import UIConstants
 
 
 class LoginPage(BasePage):
@@ -25,7 +26,8 @@ class LoginPage(BasePage):
     REQUIRED_FIELD_ERRORS_1 = (AppiumBy.XPATH, "(//android.widget.TextView[@text='This field is required'])[1]")
     REQUIRED_FIELD_ERRORS_2 = (AppiumBy.XPATH, "(//android.widget.TextView[@text='This field is required'])[2]")
     REQUIRED_ERROR_MESSAGE = (AppiumBy.XPATH,"//android.widget.TextView[@text='This field is required']")
-
+    WRONG_EMAIL_FORMAT_MESSAGE =(AppiumBy.XPATH,"//android.widget.TextView[@text='Must be a valid email format']")
+    WRONG_EMAIL_OR_PASSWORD_MESSAGE =(AppiumBy.XPATH,"//android.widget.TextView[@resource-id='login_error']") #TEXT="Your email or password is incorrect"
     # Accessibility IDs for cross-platform (iOS/Android) compatibility
     MAYBE_LATER_BTN = (AppiumBy.ACCESSIBILITY_ID, "Maybe later")
     NOTIFY_ME_BTN = (AppiumBy.ACCESSIBILITY_ID, "Yes, notify me")
@@ -88,3 +90,22 @@ class LoginPage(BasePage):
     def verify_credentials_required_field_visible_2(self):
         """Verify that the second 'This field is required' error is visible."""
         assert self.is_visible(self.REQUIRED_FIELD_ERRORS_2), "The password required field error message is not visible!"
+
+    def verify_wrong_email_format_message(self):
+        """Verify that the second 'This field is required' error is visible."""
+        assert self.is_visible(self.WRONG_EMAIL_FORMAT_MESSAGE), "The password required field error message is not visible!"
+        self.verify_element_text(self.WRONG_EMAIL_FORMAT_MESSAGE,UIConstants.INVALID_EMAIL_FORMAT)
+
+    def verify_wrong_password(self):
+        text ="Your email or password is incorrect"
+        """Verify that the second 'This field is required' error is visible."""
+        assert self.is_visible(self.WRONG_EMAIL_OR_PASSWORD_MESSAGE), "The password required field error message is not visible!"
+        self.verify_element_text(self.WRONG_EMAIL_OR_PASSWORD_MESSAGE, UIConstants.INCORRECT_CREDENTIALS)
+
+    def verify_wrong_email(self):
+        text ="Your email or password is incorrect"
+        """Verify that the second 'This field is required' error is visible."""
+        assert self.is_visible(self.WRONG_EMAIL_OR_PASSWORD_MESSAGE), "The password required field error message is not visible!"
+        self.verify_element_text(self.WRONG_EMAIL_OR_PASSWORD_MESSAGE, UIConstants.INVALID_EMAIL)
+
+

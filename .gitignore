@@ -1,6 +1,6 @@
 ### Project Specific Data
 # Exclude sensitive test data and credentials
-app/config/test_data.json
+config/test_data.json
 
 ### Application Binaries
 # Large APK files should not be stored in version control

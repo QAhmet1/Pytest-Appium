@@ -8,7 +8,8 @@ from appium.options.common import AppiumOptions
 
 from pages.bottom_tabs import BottomTabs
 from pages.login_page import LoginPage
-from utilis.data_provider import DataProvider
+from utils.data_provider import DataProvider
+from utils.gemini_analyzer import GeminiAnalyzer
 
 
 @pytest.fixture(scope="function")
@@ -91,7 +92,6 @@ def driver(request):
 
     config = load_config()
 
-    # Proje ana dizinini bul (tests klasörünün bir üstü)
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     options = AppiumOptions()
 
@@ -130,17 +130,54 @@ def pytest_addoption(parser):
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item):
-    """Attach screenshot to Allure report on test failure."""
+    """Attach screenshot and Gemini AI analysis to Allure report on test failure."""
     outcome = yield
     rep = outcome.get_result()
 
     if rep.when == "call" and rep.failed and "driver" in item.fixturenames:
-        driver = item.funcargs["driver"]
+        driver = item.funcargs.get("driver")
+        
+        # Capture screenshot
+        if driver:
+            try:
+                screenshot = driver.get_screenshot_as_png()
+                allure.attach(
+                    screenshot,
+                    name="error_screenshot",
+                    attachment_type=allure.attachment_type.PNG,
+                )
+            except Exception as exc:
+                print(f"Failed to capture screenshot for Allure: {exc}")
+        
+        # Perform Gemini AI analysis
         try:
+            analyzer = GeminiAnalyzer()
+
+            # Error message
+            error_msg = str(rep.longrepr) if rep.longrepr else "Unknown error"
+
+            # AI analys
+            analysis = analyzer.analyze(error_msg[:2000])  # token limit
+
+            # Add yo allure
             allure.attach(
-                driver.get_screenshot_as_png(),
-                name="error_screenshot",
-                attachment_type=allure.attachment_type.PNG,
+                analysis,
+                name="🤖 AI Failure Analysis (Gemini)",
+                attachment_type=allure.attachment_type.TEXT,
             )
-        except Exception as exc:  # defensive, do not break reporting
-            print(f"Failed to capture screenshot for Allure: {exc}")
+
+        except EnvironmentError as e:
+            print(f"⚠️ Gemini analysis skipped: {e}")
+            allure.attach(
+                f"Gemini analysis skipped: {e}\nSet GEMINI_API_KEY environment variable.",
+                name="⚠️ AI Analysis Skipped",
+                attachment_type=allure.attachment_type.TEXT,
+            )
+        except Exception as exc:
+            print(f"⚠️ Gemini analysis failed: {exc}")
+            allure.attach(
+                f"Gemini analysis failed: {exc}\nOriginal error: {error_msg}",
+                name="⚠️ AI Analysis Error",
+                attachment_type=allure.attachment_type.TEXT,
+            )
+

@@ -5,7 +5,7 @@ from appium.webdriver.common.appiumby import AppiumBy  # Correct import for Appi
 from selenium.common import NoSuchElementException
 
 from pages.base_page import BasePage
-from utilis.constants import UIConstants
+from utils.constants import UIConstants
 
 
 class LoginPage(BasePage):

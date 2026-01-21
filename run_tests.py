@@ -35,10 +35,33 @@ def main() -> int:
     print(f"\n--- Execution: Running tests using {python_exe} ---")
     result = subprocess.run(cmd)
 
-    # --- STEP 4: Generate and Open Allure Report ---
+    # --- STEP 4: Generate Allure HTML Report (non-blocking) ---
     if os.path.exists(report_dir) and os.listdir(report_dir):
-        print("\n--- Success: Generating and opening Allure Report ---")
-        subprocess.call(['allure', 'serve', report_dir], shell=True)
+        print("\n--- Success: Generating Allure HTML Report ---")
+        html_dir = os.path.join(report_dir, "html")
+        try:
+            # Generate static report instead of long‑running `allure serve`
+            subprocess.run(
+                ["allure", "generate", report_dir, "-o", html_dir, "--clean"],
+                check=False,
+            )
+            if os.path.exists(html_dir):
+                print(f"Allure report generated at: {os.path.abspath(html_dir)}")
+                # Optional: open report directory in default file browser
+                try:
+                    if sys.platform.startswith("win"):
+                        os.startfile(os.path.abspath(html_dir))  # type: ignore[attr-defined]
+                except Exception:
+                    # Even if opening the folder fails, it should not affect test result
+                    pass
+        except FileNotFoundError:
+            # Allure CLI is optional; do not treat missing CLI as a warning for the test run itself.
+            print(
+                "\n[INFO] 'allure' CLI not found. "
+                "Results directory was created under 'reports', "
+                "but HTML report generation was skipped. "
+                "Install Allure CLI if you want local HTML reports."
+            )
     else:
         print("\n--- Error: No report data found. Allure could not be started. ---")
 

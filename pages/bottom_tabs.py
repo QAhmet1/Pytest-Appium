@@ -3,13 +3,13 @@ from appium.webdriver.common.appiumby import AppiumBy  # Correct import for Appi
 from pages.base_page import BasePage
 
 class BottomTabs(BasePage):
-   HOME= (AppiumBy.XPATH,"//android.widget.TextView[@text='Home']")
-   PORTFOLIO= (AppiumBy.XPATH,"//android.widget.TextView[@text='Portfolio']")
-   MARKETS= (AppiumBy.XPATH,"//android.widget.TextView[@text='Markets']")
-   MORE= (AppiumBy.XPATH,"//android.widget.TextView[@text='More']")
+   HOME = (AppiumBy.XPATH, "//android.widget.TextView[@text='Home']")
+   PORTFOLIO = (AppiumBy.XPATH, "//android.widget.TextView[@text='Portfolio']")
+   MARKETS = (AppiumBy.XPATH, "//android.widget.TextView[@text='Markets']")
+   MORE = (AppiumBy.XPATH, "//android.widget.TextView[@text='More']")
 
    def verify_bottom_tabs_visible(self):
-       """Tüm alt tabların görünür olduğunu doğrular."""
+       """Verify that all main bottom tabs are visible on the screen."""
        tabs = [self.HOME, self.PORTFOLIO, self.MARKETS, self.MORE]
        for tab in tabs:
            # is_visible provides built-in waiting logic (Explicit Wait)

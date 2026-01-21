@@ -8,7 +8,9 @@ class BasePage:
 
     def __init__(self, driver):
         self.driver = driver
-        self.wait = WebDriverWait(self.driver, 15)
+        # Keep default explicit wait at a reasonable value
+        # Too high values slow down tests a lot when locators are wrong.
+        self.wait = WebDriverWait(self.driver, 10)
 
     def find(self, locator):
         """Find element with explicit wait."""
@@ -32,7 +34,7 @@ class BasePage:
         element = self.wait.until(EC.visibility_of_element_located(locator))
         return element.text
 
-    def is_visible(self, locator: tuple[str,str], timeout: int = 10) -> bool:
+    def is_visible(self, locator: tuple[str, str], timeout: int = 10) -> bool:
         """
         Checks if an element is physically visible on the screen within the given timeout.
 
@@ -41,7 +43,9 @@ class BasePage:
         :return: True if the element is found and visible, False otherwise.
         """
         try:
-            self.wait.until(EC.visibility_of_element_located(locator))
+            WebDriverWait(self.driver, timeout).until(
+                EC.visibility_of_element_located(locator)
+            )
             return True
         except (TimeoutException, NoSuchElementException):
             return False

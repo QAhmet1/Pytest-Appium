@@ -1,8 +1,6 @@
-import json
-import os
 
 from appium.webdriver.common.appiumby import AppiumBy  # Correct import for Appium locators
-from selenium.common import NoSuchElementException, TimeoutException
+from selenium.common import NoSuchElementException
 
 from pages.base_page import BasePage
 from utils.constants import UIConstants
@@ -41,39 +39,8 @@ class LoginPage(BasePage):
 
     # --- Actions ---
     def navigate_to_signin_screen(self):
-        """Ensure we are on the Sign in screen.
-
-        If the onboarding Sign in button exists, tap it; otherwise assume
-        we are already on the login screen and just wait for the email field.
-        """
-        # If we already navigated once in this driver session, skip all checks.
-        if getattr(self.driver, "_onboarding_done", False):
-            return
-
-        # Fast path: if we are already on the login screen, return immediately.
-        if self.is_visible(self.EMAIL_INPUT, timeout=2):
-            # Mark onboarding as done for this session
-            self.driver._onboarding_done = True
-            return
-
-        # On first launch there might be an onboarding "Sign in" button.
-        # If it is not present, we simply continue.
-        try:
-            if self.is_visible(self.SIGN_IN_BUTTON_ONBOARDING, timeout=3):
-                self.click(self.SIGN_IN_BUTTON_ONBOARDING)
-        except (TimeoutException, NoSuchElementException):
-            # Onboarding did not appear or disappeared during wait – continue.
-            pass
-
-        # In all cases, make sure the email input of the login screen is visible.
-        is_on_login_page = self.is_visible(self.EMAIL_INPUT, timeout=7)
-        assert (
-            is_on_login_page is True
-        ), "Navigation failed: Login screen (Email input) not found."
-
-        # Mark onboarding as completed so subsequent tests skip navigation.
-        self.driver._onboarding_done = True
-
+        """Ensure we are on the Sign in screen."""
+        self.click(self.SIGN_IN_BUTTON_ONBOARDING)
 
     def login(self, email: str, password: str):
         """Main login method."""
@@ -118,13 +85,13 @@ class LoginPage(BasePage):
         self.verify_element_text(self.WRONG_EMAIL_FORMAT_MESSAGE,UIConstants.INVALID_EMAIL_FORMAT)
 
     def verify_wrong_password(self):
-        text ="Your email or password is incorrect"
+        # text ="Your email or password is incorrect"
         """Verify that the second 'This field is required' error is visible."""
         assert self.is_visible(self.WRONG_EMAIL_OR_PASSWORD_MESSAGE), "The password required field error message is not visible!"
         self.verify_element_text(self.WRONG_EMAIL_OR_PASSWORD_MESSAGE, UIConstants.INCORRECT_CREDENTIALS)
 
     def verify_wrong_email(self):
-        text ="Your email or password is incorrect"
+        # text ="Your email or password is incorrect"
         """Verify that the second 'This field is required' error is visible."""
         assert self.is_visible(self.WRONG_EMAIL_OR_PASSWORD_MESSAGE), "The password required field error message is not visible!"
         self.verify_element_text(self.WRONG_EMAIL_OR_PASSWORD_MESSAGE, UIConstants.INVALID_EMAIL)

@@ -8,7 +8,7 @@ warnings.filterwarnings(
     message="All support for the `google.generativeai` package has ended.*",
 )
 
-import google.generativeai as genai
+import google.genai as genai
 from google.api_core import exceptions as google_exceptions
 
 

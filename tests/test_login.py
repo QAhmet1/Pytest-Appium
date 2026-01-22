@@ -14,13 +14,16 @@ class TestSignIn:
         self.valid_user = data.get_user("valid_user")
         self.invalid_user = data.get_user("invalid_user")
 
-        with allure.step("Navigate to Sign In screen"):
-            app.login.navigate_to_signin_screen()
+        # with allure.step("Navigate to Sign In screen"):
+        #     app.login.navigate_to_signin_screen()
 
     @allure.story("Empty Credentials Validation")
     @allure.severity(allure.severity_level.CRITICAL)
     @allure.description("Verify that 'field required' messages appear when both inputs are empty.")
     def test_required_email_password_fields(self, app):
+        with allure.step("Navigate to Sign In screen"):
+            app.login.navigate_to_signin_screen()
+
         with allure.step("Click continue with empty fields"):
             app.login.click(app.login.LOGIN_BUTTON)
 
